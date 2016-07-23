@@ -86,6 +86,7 @@ for bench in $BENCHMARKS ; do
     get_category $bench
     /postprocess.py $category
   fi
+  rm /out.yml
 done
 
 echo "]"
