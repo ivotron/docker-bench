@@ -15,6 +15,6 @@ RUN apt-get update && apt-get install -y patch wget && \
     apt -y --purge autoremove && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ADD entrypoint.sh /root/mpiapp-entrypoint.sh
+ADD entrypoint.sh /root/
 
-ENTRYPOINT ["/root/mpiapp-entrypoint.sh"]
+ENTRYPOINT ["/root/entrypoint.sh"]
