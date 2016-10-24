@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./CoMD-serial > output
+/comd/bin/CoMD-mpi > output
 
 if [ $? -ne 0 ] ; then
    cat output
@@ -9,7 +9,7 @@ fi
 
 result=`sed -n 's/total *1 *\([0-9]*\.[0-9]*\) *.*/\1/p' output`
 echo "[{"
-echo "\"name\": \"comd-serial\", "
+echo "\"name\": \"comd\", "
 echo "\"class\": \"cpu\", "
 echo "\"lower_is_better\": true, "
 echo "\"result\": \"$result\" "
