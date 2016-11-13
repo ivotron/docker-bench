@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+genfio "$@" -x fio-file &> /dev/null
+
+/root/entrypoint.sh -f /root/fio-file*
