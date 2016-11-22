@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /usr/share/doc/conceptual/examples/
+cd /usr/local/share/conceptual/examples/
 
 for f in * ; do
   f_without_ext=`basename $f .ncptl`

@@ -2,12 +2,20 @@ FROM ivotron/openmpi
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y python libpapi-dev libpci-dev libpopt-dev uuid-dev && \
+RUN apt-get update && \
+    apt-get --no-install-recommends -y install \
+      python libpapi-dev libpci-dev libpopt-dev uuid-dev python-dev perl texinfo && \
     apt-get autoremove --purge -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    wget http://downloads.sourceforge.net/project/conceptual/conceptual/1.5.1/conceptual_1.5.1-1_amd64.deb && \
-    dpkg -i conceptual_1.5.1-1_amd64.deb && \
-    rm conceptual_1.5.1-1_amd64.deb
+    wget --no-check-certificate https://github.com/losalamos/conceptual/tarball/v1.5.1 -O - | tar xz && \
+    mv losalamos* /conceptual && \
+    cd /conceptual && \
+    CC=mpicc ./configure && \
+    (make || true) && \
+    make && \
+    make install
+
+ENV LD_LIBRARY_PATH=/usr/local/lib
 
 ADD build_examples.sh /root/
 ADD entrypoint.sh /root/
