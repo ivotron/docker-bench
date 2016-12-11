@@ -13,12 +13,17 @@ RUN apt-get update && \
     CC=mpicc ./configure && \
     (make || true) && \
     make && \
-    make install
+    make install && \
+    cd / && \
+    rm -r /conceptual
 
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
 ADD build_examples.sh /root/
-ADD entrypoint.sh /root/
 RUN cd /root && ./build_examples.sh && \
-    rm /root/build_examples.sh
+    rm /root/build_examples.sh && ldconfig
+
+ADD mpipostrun /usr/bin/
+ADD entrypoint.sh /root/
+
 ENTRYPOINT ["/root/entrypoint.sh"]

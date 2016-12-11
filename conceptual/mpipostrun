@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -d /results ] ; then
+  cp *.log /results/
+  cp foo /results/
+else
+  ls -l *.log
+  cat *.log
+fi
