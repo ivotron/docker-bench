@@ -1,13 +1,18 @@
 FROM debian:jessie
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update && \
-    apt-get install -y make gcc g++ wget python python-yaml && \
-    wget --no-check-certificate https://github.com/ColinIanKing/stress-ng/archive/V0.06.12.tar.gz && \
-    tar xfz V0.06.12.tar.gz && \
+    apt-get install -y make g++ wget && \
+    wget --no-check-certificate https://github.com/ColinIanKing/stress-ng/archive/V0.07.09.tar.gz && \
+    tar xfz V0.07.09.tar.gz && \
     mv stress-ng* /stress-ng && \
     make -C /stress-ng && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN mv /stress-ng/stress-ng /usr/bin
-ADD postprocess.py /
-ADD entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+    mv /stress-ng/stress-ng /usr/bin && \
+    rm -r /stress-ng && \
+    apt-get remove -y make g++ wget && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENTRYPOINT ["stress-ng"]
