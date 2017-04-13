@@ -1,4 +1,4 @@
-FROM ivotron/openmpi
+FROM ivotron/openmpi:v2.0.2
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -15,6 +15,4 @@ RUN apt-get update && apt-get install -y patch wget && \
     apt -y --purge autoremove && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ADD entrypoint.sh /root/
-
-ENTRYPOINT ["/root/entrypoint.sh"]
+ENTRYPOINT ["mpirun_docker", "lulesh2.0"]
