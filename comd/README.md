@@ -1,13 +1,19 @@
-# lulesh
+# CoMD
 
-Docker image for the [LULESH](https://codesign.llnl.gov/lulesh.php) 
-proxy app compiled using OpenMPI.
+Docker image for the [CoMD](https://github.com/exmatex/CoMD) proxy app 
+compiled using OpenMPI.
 
 ```bash
 docker run --rm \
   -e SINGLE_NODE=1 \
   -e MPIRUN_FLAGS="-np 8" \
-  ivotron/lulesh:v2.0.3 -i 1 -s 100
+  ivotron/comd:v1.1 \
+    --xproc 2 \
+    --yproc 2 \
+    --zproc 2 \
+    --nx 64 \
+    --ny 64 \
+    --nz 64
 ```
 
 For more options, pass the `-h` flag. To run in more than one machine, 
