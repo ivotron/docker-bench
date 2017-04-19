@@ -18,4 +18,6 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ENTRYPOINT ["stress-ng"]
+ADD entrypoint.sh /root
+
+ENTRYPOINT ["/root/entrypoint.sh"]
