@@ -1,8 +1,9 @@
 #!/bin/bash
 
+echo "test finished; copying results"
+
+ls -l ./
+
 if [ -d /results ] ; then
-  cp *.log /results/
-else
-  ls -l *.log
-  cat *.log
+  cp * /results/
 fi

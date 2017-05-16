@@ -23,4 +23,7 @@ ADD build_examples.sh /root/
 RUN cd /root && ./build_examples.sh && \
     rm /root/build_examples.sh && ldconfig
 
+WORKDIR /root
+
 ADD mpipostrun /usr/bin/
+ADD mpirun_docker /usr/bin/
