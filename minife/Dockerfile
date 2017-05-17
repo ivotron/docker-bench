@@ -1,0 +1,12 @@
+FROM ivotron/openmpi:v2.0.2
+
+RUN wget --no-check-certificate https://github.com/mantevo/minife/archive/c34d8a2.tar.gz -O - | tar xz && \
+    mv miniFE* minife && \
+    cd minife/openmp/src && \
+    make
+
+WORKDIR /root
+
+ADD mpipostrun /usr/bin
+
+ENTRYPOINT ["mpirun_docker", "/minife/openmp/src/miniFE.x"]
