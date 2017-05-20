@@ -9,6 +9,4 @@ RUN wget --no-check-certificate https://github.com/gtcasl/hpc-benchmarks/archive
 
 WORKDIR /root
 
-ADD mpipostrun /usr/bin
-
 ENTRYPOINT ["mpirun_docker", "HPCCG.x.mpi"]

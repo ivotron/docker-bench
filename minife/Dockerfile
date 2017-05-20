@@ -7,6 +7,4 @@ RUN wget --no-check-certificate https://github.com/mantevo/minife/archive/c34d8a
 
 WORKDIR /root
 
-ADD mpipostrun /usr/bin
-
-ENTRYPOINT ["mpirun_docker", "/minife/openmp/src/miniFE.x"]
+ENTRYPOINT ["mpirun_docker", "/minife/ref/src/miniFE.x"]

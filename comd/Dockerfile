@@ -9,6 +9,4 @@ RUN wget --no-check-certificate https://github.com/exmatex/CoMD/tarball/master -
 
 WORKDIR /root
 
-ADD mpipostrun /usr/bin
-
 ENTRYPOINT ["mpirun_docker", "/comd/bin/CoMD-mpi"]

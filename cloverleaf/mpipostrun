@@ -1,9 +1,0 @@
-#!/bin/bash
-
-echo "test finished; copying results"
-
-ls -l ./
-
-if [ -d /results ] ; then
-  cp * /results/
-fi

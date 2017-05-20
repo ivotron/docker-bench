@@ -5,13 +5,9 @@ RUN wget --no-check-certificate https://github.com/mantevo/minixyce/archive/f41f
     cd /minixyce/ref/src && \
     make || true && \
     make && \
-    mv ../../tests/default_params.txt /root && \
-    mv miniXyce.x /usr/bin/ && \
-    cd / && \
-    rm -r /minixyce
+    cp ../../tests/params.txt /root && \
+    mv miniXyce.x /usr/bin/
 
 WORKDIR /root
-
-ADD mpipostrun /usr/bin
 
 ENTRYPOINT ["mpirun_docker", "miniXyce.x"]

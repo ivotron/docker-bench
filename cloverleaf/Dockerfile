@@ -5,7 +5,8 @@ RUN apt-get update && \
     git clone --recursive https://github.com/UK-MAC/CloverLeaf && \
     cd CloverLeaf/ && \
     make COMPILER=GNU mpi && \
-    mv CloverLeaf_MPI/clover.in /root/ && \
+    mv CloverLeaf_MPI/InputDecks /clover_input/ && \
+    cp /clover_input/clover_bm.in /root/clover.in && \
     mv CloverLeaf_MPI/clover_leaf /usr/bin/ && \
     cd / && \
     rm -fr CloverLeaf_MPI && \
@@ -15,7 +16,5 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /root
-
-ADD mpipostrun /usr/bin
 
 ENTRYPOINT ["mpirun_docker", "clover_leaf"]
