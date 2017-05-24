@@ -14,21 +14,29 @@ NUM_UNIQUE_QUERIES="100"
 if [ -z "$ENGINES" ]; then
   ENGINES="memory"
 fi
+if [ -z "$MYSQL_HOST" ]; then
+  echo "expecting MYSQL_HOST variable"
+  exit 1
+fi
+if [ -z "$MYSQL_PASSWD" ]; then
+  echo "expecting MYSQL_PASSWD variable"
+  exit 1
+fi
 
 # increase in-memory table size limit
 mysql \
-  -h$MYSQL_PORT_3306_TCP_ADDR \
-  -P$MYSQL_PORT_3306_TCP_PORT \
+  -h$MYSQL_HOST \
+  -P3306 \
   -uroot \
-  -p$MYSQL_ENV_MYSQL_ROOT_PASSWORD \
+  -p$MYSQL_PASSWD \
   -e "SET GLOBAL tmp_table_size = 1024 * 1024 * 1024 * 6; SET GLOBAL max_heap_table_size = 1024 * 1024 * 1024 * 2;"
 
 for ENGINE in $ENGINES; do
 
-common="-h$MYSQL_PORT_3306_TCP_ADDR"
-common+=" -P$MYSQL_PORT_3306_TCP_PORT"
+common="-h$MYSQL_HOST"
+common+=" -P3306"
 common+=" -uroot"
-common+=" -p$MYSQL_ENV_MYSQL_ROOT_PASSWORD"
+common+=" -p$MYSQL_PASSWD"
 common+=" --engine=$ENGINE"
 common+=" --number-char-cols=$NUM_VARCHAR_COLUMNS"
 common+=" --number-int-cols=$NUM_INT_COLUMNS"
@@ -69,13 +77,13 @@ $TIMEIT -o /tmp/time_${ENGINE}_update ${exec_queries}update.sql
 
 mysqlslap $common ${query_gen}mixed > /tmp/queries_mixed.sql
 sed -i 's/CREATE.*//' /tmp/queries_mixed.sql
-$TIMEIT -o /tmp/time_mixed ${exec_queries}mixed.sql
+$TIMEIT -o /tmp/time_${ENGINE}_mixed ${exec_queries}mixed.sql
 
 mysql \
-  -h$MYSQL_PORT_3306_TCP_ADDR \
-  -P$MYSQL_PORT_3306_TCP_PORT \
+  -h$MYSQL_HOST \
+  -P3306 \
   -uroot \
-  -p$MYSQL_ENV_MYSQL_ROOT_PASSWORD \
+  -p$MYSQL_PASSWD \
   -e "drop database mysqlslap;"
 
 done
