@@ -2,7 +2,7 @@
 set -e
 
 if [ -z "$METHODS" ]; then
-  stress-ng $@
+  exec stress-ng $@
   exit 0
 fi
 
@@ -38,3 +38,5 @@ for m in flip galpat-0 galpat-1 gray rowhammer incdec inc-nybble rand-set rand-s
     stress-ng --vm 1 --vm-method $m $@
   fi
 done
+
+exit 0
