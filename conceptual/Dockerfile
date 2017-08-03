@@ -23,4 +23,4 @@ ADD build_examples.sh /root/
 RUN cd /root && ./build_examples.sh && \
     rm /root/build_examples.sh && ldconfig
 
-ADD mpipostrun /usr/bin/
+WORKDIR /root

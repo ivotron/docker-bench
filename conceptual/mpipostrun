@@ -1,8 +1,0 @@
-#!/bin/bash
-
-if [ -d /results ] ; then
-  cp *.log /results/
-else
-  ls -l *.log
-  cat *.log
-fi
