@@ -1,0 +1,24 @@
+#!/bin/bash
+set -ex
+
+if [ -z "$OSD_DEVICES" ]; then
+  echo "Expecting OSD_DEVICES variable"
+  exit 1
+fi
+
+ceph auth get client.bootstrap-osd -o /var/lib/ceph/bootstrap-osd/ceph.keyring
+
+devices=(`echo $OSD_DEVICES | sed 's/,/ /g'`)
+
+for dev in "${devices[@]}" ; do
+  export OSD_FORCE_ZAP=1
+  export OSD_DEVICE=/dev/$dev
+  export OSD_TYPE=disk
+
+  # last invocation runs in the foreground
+  if [ $dev == ${devices[-1]} ]; then
+    /entrypoint.sh osd
+  else
+    /entrypoint.sh osd &
+  fi
+done

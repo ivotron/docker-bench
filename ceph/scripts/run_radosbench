@@ -1,0 +1,12 @@
+#!/bin/bash
+set -ex
+
+# TODO: this assumes only one client is running
+
+ceph osd pool rm rbd rbd --yes-i-really-really-mean-it
+ceph osd pool create scbench 150 150
+ceph osd pool set scbench size 1
+rados bench -p scbench 30 write --no-cleanup > /results/write_output
+rados bench -p scbench 30 seq > /results/seq_output
+rados bench -p scbench 30 rand > /results/rand_output
+rados -p scbench cleanup
