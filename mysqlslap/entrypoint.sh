@@ -3,14 +3,6 @@ set -ex
 
 sleep 20
 
-NUM_ROWS_PER_CLIENT="10000"
-NUM_UNIQUE_ROWS="100000"
-NUM_VARCHAR_COLUMNS="10"
-NUM_INT_COLUMNS="10"
-NUM_CLIENTS="2"
-NUM_QUERIES_PER_CLIENT="10000"
-NUM_UNIQUE_QUERIES="100"
-
 if [ -z "$NUM_UNIQUE_ROWS" ]; then
   NUM_UNIQUE_ROWS="100000"
 fi
@@ -43,6 +35,7 @@ if [ -z "$MYSQL_PASSWD" ]; then
   echo "expecting MYSQL_PASSWD variable"
   exit 1
 fi
+
 
 # increase in-memory table size limit
 mysql \
