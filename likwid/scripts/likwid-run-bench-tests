@@ -1,0 +1,116 @@
+#!/usr/bin/env python
+import os
+import subprocess
+import yaml
+
+if 'LIKWID_NUM_THREADS' not in os.environ:
+    print('No LIKWID_NUM_THREADS variable defined, assigning 1')
+num_threads = os.environ.get('LIKWID_NUM_THREADS', 1)
+
+if not os.path.exists('sets'):
+    raise Exception("Cannot find './sets' folder")
+
+
+def write_topology(path):
+    p = subprocess.Popen(
+        'likwid-topology',
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT
+    )
+    p.wait()
+
+    if p.returncode != 0:
+        raise Exception("Error obtaining topology")
+
+    with open(path, "w") as f:
+        f.write(p.stdout.read())
+
+
+def get_config(sets):
+
+    config = {}
+
+    for s in sets:
+
+        testfile = "sets/{}.txt".format(s)
+
+        if not os.path.exists(testfile):
+            raise Exception("File {} doesn't exist".format(testfile))
+
+        config[s] = {}
+
+        with open(testfile, 'r') as f:
+
+            for i, l in enumerate(f.read().split("\n")):
+
+                if l.startswith("TEST"):
+                    test = l.split()[1]
+                    config[s][test] = {'variants': {}}
+
+                if l.startswith("VARIANT"):
+                    size = l.split()[1]
+                    config[s][test]['variants'][size] = {}
+
+    return config
+
+
+sets = []
+
+for f in os.listdir('sets/'):
+    sets += [f.replace('.txt', '')]
+
+config = get_config(sets)
+
+for s in config:
+    for t in config[s]:
+        for b in config[s][t]['variants']:
+
+            cmd = "likwid-bench -t {} -w N:{}:{} ".format(t, b, num_threads)
+
+            print('Executing s={} t={} b={}'.format(s, t, b))
+
+            p = subprocess.Popen(
+                cmd,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT
+            )
+            p.wait()
+
+            if p.returncode != 0:
+                raise Exception("Error executing likwid-bench")
+
+            stdout = p.stdout.read()
+
+            p.stdout.close()
+
+            found_line_with_data = False
+
+            for l in stdout.lower().split('\n'):
+                if not found_line_with_data and not l.startswith('cycles'):
+                    continue
+                if l.startswith('------'):
+                    break
+
+                found_line_with_data = True
+
+                tokens = l.split(':')
+
+                key = tokens[0].strip()
+                value = tokens[1].strip()
+
+                key = key.replace('(', '').replace(')', '').replace(' ', '_')
+                key = key.replace('/', '_per_').replace('.', '')
+
+                value = value.replace(' sec', '')
+
+                config[s][t]['variants'][b][key] = value
+
+
+if os.path.exists('/results'):
+    with open('/results/output.yml', 'w') as f:
+        yaml.dump(config, f, default_flow_style=False)
+    write_topology('/results/topology')
+else:
+    print(config)
