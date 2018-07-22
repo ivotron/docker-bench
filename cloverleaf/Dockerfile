@@ -7,7 +7,7 @@ RUN apt-get update && \
     sed -i 's/-march=native//' CloverLeaf_MPI/Makefile && \
     make COMPILER=GNU mpi && \
     mv CloverLeaf_MPI/InputDecks /clover_input/ && \
-    cp /clover_input/clover_bm.in /root/clover.in && \
+    cp /clover_input/clover_bm4_short.in /root/clover.in && \
     mv CloverLeaf_MPI/clover_leaf /usr/bin/ && \
     cd / && \
     rm -fr CloverLeaf && \
