@@ -1,4 +1,4 @@
-FROM ivotron/openmpi:v2.0.2
+FROM ivotron/openmpi:3.1.1-arm64v8
 
 RUN apt-get update && \
     apt-get install -y git gfortran && \
@@ -11,9 +11,6 @@ RUN apt-get update && \
     mv CloverLeaf_MPI/clover_leaf /usr/bin/ && \
     cd / && \
     rm -fr CloverLeaf && \
-    apt-get purge -y gfortran git && \
-    apt-get autoremove --purge -y && \
-    apt-get install libgfortran-6-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /root

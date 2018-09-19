@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:9.3-slim
 
 RUN apt-get update && apt-get install -y \
         wget libtbb-dev libgtest-dev libboost-thread-dev libssl-dev \

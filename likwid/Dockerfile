@@ -1,6 +1,6 @@
 FROM debian:9.3-slim
 
-ARG LIKWID_VERSION=4.3.1
+ARG LIKWID_VERSION=master
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -11,6 +11,7 @@ RUN apt update && \
     cd likwid && \
     git checkout $LIKWID_VERSION && \
     sed -i 's/INSTRUMENT_BENCH.*/INSTRUMENT_BENCH = false#NO SPACE/' config.mk && \
+    sed -i 's/COMPILER = .*/COMPILER = GCCARMv8/' config.mk && \
     make && \
     make install && \
     cd && \

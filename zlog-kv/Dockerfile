@@ -1,4 +1,4 @@
-FROM ubuntu:zesty
+FROM debian:9.3-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG GITREF=master

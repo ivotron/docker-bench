@@ -1,4 +1,4 @@
-FROM ivotron/openmpi:v2.0.2
+FROM ivotron/openmpi:3.1.1-arm64v8
 
 RUN wget --no-check-certificate https://github.com/mantevo/miniaero/archive/f46d135.tar.gz -O - | tar xz && \
     wget --no-check-certificate https://github.com/kokkos/kokkos/archive/36b92f4.tar.gz -O - | tar xz && \

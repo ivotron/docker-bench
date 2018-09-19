@@ -1,7 +1,7 @@
-FROM ivotron/openmpi:v2.0.2
+FROM ivotron/openmpi:3.1.1-arm64v8
 
 RUN wget --no-check-certificate https://github.com/exmatex/CoMD/tarball/master -O - | tar xz && \
-    mv exmatex* comd && \
+    mv ECP* comd && \
     cd comd/src-mpi/ && \
     cp Makefile.vanilla Makefile && \
     sed -i 's/ -O5/ -O2/' Makefile && \

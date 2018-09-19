@@ -1,4 +1,4 @@
-FROM ivotron/openmpi:v2.0.2
+FROM ivotron/openmpi:3.1.1-arm64v8
 
 RUN wget --no-check-certificate https://github.com/mantevo/miniamr/archive/7ae7865.tar.gz -O - | tar xz && \
     mv miniA* miniamr && \
