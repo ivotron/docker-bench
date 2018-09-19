@@ -5,6 +5,7 @@ RUN apt-get update && \
     wget --no-check-certificate https://github.com/gtcasl/hpc-benchmarks/archive/9b90582.tar.gz -O - | tar xz && \
     mv hpc* hpcb && \
     cd /hpcb/SSCA2v2.2/ && \
+    sed -i 's/-m64//' /hpcb/SSCA2v2.2/Makefile.var && \
     mkdir sprng2.0/lib && \
     make && \
     mv SSCA2 /usr/bin && \
